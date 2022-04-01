@@ -1,4 +1,5 @@
 import { LoaderFunction, useLoaderData } from "remix";
+import { GithubContainer } from "~/features/github/GithubContainer";
 import { LoaderData } from "~/features/github/types";
 import { getGithubUser } from '../features/github/api';
 
@@ -14,12 +15,7 @@ export const loader: LoaderFunction = async ({params})=>{
 export default function(){
   //get data User from loader
   const { user } = useLoaderData<LoaderData>();
-
   return (
-    <>
-      <h1>{user.login}</h1>
-      <blockquote>{user.bio}</blockquote>
-      <img src={user.avatar_url} alt={user.login} width="150"/>
-    </>
+    <GithubContainer user={user}/>
   );
 }
