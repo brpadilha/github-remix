@@ -11,6 +11,10 @@ export const loader: LoaderFunction = async ({params})=>{
   };
 }
 
+export function ErrorBoundary(){
+  return <h3>Whoops! 💣</h3>
+}
+
 export default function(){
   //get data User from loader
   const { user } = useLoaderData<LoaderData>();
