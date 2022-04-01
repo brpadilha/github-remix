@@ -1,16 +1,9 @@
 import { LoaderFunction, useLoaderData } from "remix";
+import { LoaderData } from "~/features/github/types";
 
-export interface User {
-  login: string;
-  avatar_url:string;
-  html_url:string;
-  bio:string
-}
 
-export interface LoaderData  {
-  user: User;
-}
-
+// Loader function
+// it will load data from github api and can access like a route on http://localhost:3000/github/$username
 export const loader: LoaderFunction = async ({params})=>{
   const response = await fetch(`https://api.github.com/users/${params.username}`,{
     headers:{
@@ -18,20 +11,23 @@ export const loader: LoaderFunction = async ({params})=>{
       'Authorization': 'token ' + process.env.GITHUB_TOKEN
     }
   });
+
+  const { login, avatar_url, html_url, bio } = await response.json();
   
   return {
-    user: await response.json()
-  }
+    user: { login, avatar_url, html_url, bio },
+  };
 }
 
-export default function(){
-  const { user } = useLoaderData<LoaderData>();
+// export default function(){
+//   //get data User from loader
+//   const { user } = useLoaderData<LoaderData>();
 
-  return (
-    <>
-      <h1>{user.login}</h1>
-      <blockquote>{user.bio}</blockquote>
-      <img src={user.avatar_url} alt={user.login} width="150"/>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <h1>{user.login}</h1>
+//       <blockquote>{user.bio}</blockquote>
+//       <img src={user.avatar_url} alt={user.login} width="150"/>
+//     </>
+//   );
+// }
